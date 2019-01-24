@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  .show
+    if product
+      h1 Detail
+      h1= product.product_name
+      p= product.price
+      p= product.description
+    else
+      p No product

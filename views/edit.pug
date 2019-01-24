@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1=title
+  ul.errors
+    if errors
+      each error, i in errors
+        li.alert.alert-danger #{error.msg}
+
+  h2 Edit Product
+  form(method='post', action=`/products/update/${product._id}`, encrypted="multipart/form-data")
+    .form-group
+      label Product Name:
+      input.form-control(name='product_name', type='text', value=`${product.product_name}`)
+    .form-group
+      label Price:
+      input.form-control(name='price', type='text', value=`${product.price}`)
+    .form-group
+      label Description:
+      input.form-control(name='description', type='text', value=`${product.description}`)
+    input.btn.btn-default(name='submit', type='submit', value='Update')

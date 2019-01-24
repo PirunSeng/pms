@@ -1,5 +1,23 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  if products
+    table(border='1')
+      tr
+        th Product Name
+        th Price
+        th Description
+        th(colspan='3') Action
+      each product, i in products
+        tr
+          td= product.product_name
+          td= product.price
+          td= product.description
+          td
+            a(href=`/products/show/${product._id}`) Detail
+          td
+            a(href=`/products/edit/${product._id}`) Edit
+          td
+            a(id='deleteProduct', data-delete='#{product._id}', href='#') Delete
+  else
+    p There are no products to display

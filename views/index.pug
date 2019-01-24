@@ -18,6 +18,6 @@ block content
           td
             a(href=`/products/edit/${product._id}`) Edit
           td
-            a(id='deleteProduct', data-delete='#{product._id}', href='#') Delete
+            a(class='deleteProduct', data-id=`${product._id}`, href='#') Delete
   else
     p There are no products to display

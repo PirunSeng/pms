@@ -9,9 +9,18 @@ router.get('/show/:id', function(req, res, next){
   var products = db.get('products');
 
   products.findOne({ _id: req.params.id }, {}, function(err, product){
-    res.render('show', {
-      "product": product
-    });
+    if(!product){
+      res.render('error', {
+        message: 'Record not found',
+        error: {
+          status: 404
+        }
+      });
+    }else{
+      res.render('show', {
+        "product": product
+      });
+    }
   });
 });
 
@@ -28,9 +37,18 @@ router.get('/edit/:id', function(req, res, next){
   var products = db.get('products');
 
   products.findOne({ _id: req.params.id }, {}, function(err, product){
-    res.render('edit', {
-      "product": product
-    });
+    if(!product){
+      res.render('error', {
+        message: 'Record not found',
+        error: {
+          status: 404
+        }
+      });
+    }else{
+      res.render('edit', {
+        "product": product
+      });
+    }
   });
 });
 

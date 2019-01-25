@@ -61,7 +61,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-// READ Get a product
+// READ Show a product
 router.get('/:id', function(req, res, next) {
   var db = req.db;
   var products = db.get('products');
@@ -69,11 +69,18 @@ router.get('/:id', function(req, res, next) {
   var filter = { _id: pid }
 
   products.findOne(filter, {}, function(err, product){
-    res.status(200).send({
-      success: 'true',
-      message: 'product retrieved successfully',
-      product: product
-    });
+    if(!product){
+      res.status(404).send({
+        success: 'false',
+        message: 'Record not found'
+      })
+    }else{
+      res.status(200).send({
+        success: 'true',
+        message: 'product retrieved successfully',
+        product: product
+      });
+    }
   });
 });
 
@@ -96,29 +103,39 @@ router.put('/:id', function(req, res) {
       message: 'price is required'
     });
   }
-  var product = {
-    "product_name": product_name,
-    "price": price,
-    "description": description,
-    "timestamp": timestamp
-  }
 
+  var filter    = { _id: pid };
   var db        = req.db;
   var products  = db.get('products');
 
-  var filter    = { _id: pid };
-  var newvalues = { $set: product };
-  products.update(filter, newvalues, function(err, product){
-    if(err){
-      return res.status(400).send({
+  products.findOne(filter, {}, function(err, product){
+    if(!product){
+      return res.status(404).send({
         success: 'false',
-        message: 'There was an issue updating the product'
-      });
+        message: 'Record not found'
+      })
     }else{
-      return res.status(201).send({
-        success: 'true',
-        message: 'product updated successfuly',
-        product
+      var product = {
+        "product_name": product_name,
+        "price": price,
+        "description": description,
+        "timestamp": timestamp
+      }
+
+      var newvalues = { $set: product };
+      products.update(filter, newvalues, function(err, product){
+        if(!product){
+          return res.status(400).send({
+            success: 'false',
+            message: 'There was an issue updating the product'
+          });
+        }else{
+          return res.status(201).send({
+            success: 'true',
+            message: 'product updated successfuly',
+            product: product
+          });
+        }
       });
     }
   });
@@ -129,16 +146,18 @@ router.delete('/:id',  function(req, res){
   var pid      = req.params.id;
   var products = db.get('products');
   var filter   = { _id: pid };
-  products.remove(filter, function(err){
-    if(err){
+  products.findOne(filter, {}, function(err, product){
+    if(!product){
       return res.status(404).send({
         success: 'false',
-        message: 'product not found',
+        message: 'record not found',
       });
     }else{
-      return res.status(200).send({
-        success: 'true',
-        message: 'Product deleted successfuly',
+      products.remove(filter, function(err){
+        return res.status(200).send({
+          success: 'true',
+          message: 'product deleted successfuly',
+        });
       });
     }
   });

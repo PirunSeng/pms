@@ -122,3 +122,5 @@ router.delete('/delete/:id',  function(req, res){
 });
 
 module.exports = router;
+
+// todo : add all remaining fields including image or drop table and create again.

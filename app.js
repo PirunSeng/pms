@@ -16,6 +16,12 @@ var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/products');
 
+// way one works
+// var apiRouter = require('./routes/api_test');
+// way two?
+var apiV1Router = require('./routes/api/v1/products');
+
+
 var app = express();
 
 // view engine setup
@@ -73,6 +79,10 @@ app.use(function(req, res, next){
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 app.use('/products', productsRouter);
+// way one works
+// app.use('/api/v1/products', apiRouter);
+// way two?
+app.use('/api/v1/products', apiV1Router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

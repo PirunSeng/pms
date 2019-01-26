@@ -55,9 +55,21 @@ router.get('/edit/:id', function(req, res, next){
 // CREATE
 router.post('/add', function(req, res, next){
   var product_name = req.body.product_name;
-  var price        = req.body.price;
   var description  = req.body.description;
+  var price        = req.body.price;
+  var discount     = req.body.discount;
   var timestamp    = new Date();
+
+  if(req.file){
+    var imageOriginalName = req.file.originalname;
+    var imageFilename = req.file.filename;
+    var imageMime = req.file.mimetype;
+    var imagePath = req.file.path;
+    var imageExt = req.file.extension;
+    var imageSize = req.file.size;
+  }else{
+    var imageFilename = 'no_image.jpg';
+  }
 
   // form validation
   req.checkBody('product_name', 'Product name is required').notEmpty();
@@ -74,9 +86,11 @@ router.post('/add', function(req, res, next){
     // submit to db
     products.insert({
       "product_name": product_name,
-      "price": price,
       "description": description,
-      "timestamp": timestamp
+      "price": price,
+      "discount": discount,
+      "timestamp": timestamp,
+      "avatar": imageFilename
     }, function(err, product){
       if(err){
         res.send('There was an issue saving the product.')
@@ -92,11 +106,22 @@ router.post('/add', function(req, res, next){
 // UPDATE
 router.post('/update/:id', function(req, res, next){
   var product_name = req.body.product_name;
-  var price       = req.body.price;
-  var description = req.body.description;
-  // var timestamp   = new Date();
+  var description  = req.body.description;
+  var price        = req.body.price;
+  var discount     = req.body.discount;
   var pid         = req.params.id;
   var products    = db.get('products');
+
+  if(req.file){
+    var imageOriginalName = req.file.originalname;
+    var imageFilename = req.file.filename;
+    var imageMime = req.file.mimetype;
+    var imagePath = req.file.path;
+    var imageExt = req.file.extension;
+    var imageSize = req.file.size;
+  }else{
+    var imageFilename = 'no_image.jpg';
+  }
 
   // form validation
   req.checkBody('product_name', 'Product name is required').notEmpty();
@@ -112,7 +137,7 @@ router.post('/update/:id', function(req, res, next){
   }else{
     // submit to db
     var filter = { _id: pid };
-    var newvalues = { $set: { "product_name": product_name, "price": price, "description": description } };
+    var newvalues = { $set: { "product_name": product_name, "price": price, "description": description, "discount": discount, "avatar": imageFilename } };
     products.update(filter, newvalues, function(err, product){
       if(err){
         res.send('There was an issue updating the product.')
@@ -140,5 +165,3 @@ router.delete('/delete/:id',  function(req, res){
 });
 
 module.exports = router;
-
-// todo : add all remaining fields including image or drop table and create again.

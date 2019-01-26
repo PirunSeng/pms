@@ -8,7 +8,7 @@ var session = require('express-session');
 var mongo = require('mongodb');
 var db = require('monk')('mongodb://localhost:27017/pms_development');
 var multer = require('multer');
-var upload = multer({ dest: './public/images/uploads' });
+var upload = multer({ dest: './public/images/uploads/' });
 
 var flash = require('connect-flash');
 
@@ -29,7 +29,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // Handle file upload & multipart data
-// app.use(multer({ dest: './public/images/uploads' }));
+app.use(upload.single('avatar'));
 
 
 app.use(logger('dev'));

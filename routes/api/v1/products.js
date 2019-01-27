@@ -6,8 +6,9 @@ var db = require('monk')('mongodb://localhost:27017/pms_development');
 // CREAT a product
 router.post('/', function(req, res) {
   var product_name = req.body.product_name;
-  var price        = req.body.price;
   var description  = req.body.description;
+  var price        = req.body.price;
+  var discount     = req.body.discount;
   var timestamp    = new Date();
 
   if(!product_name) {
@@ -23,8 +24,9 @@ router.post('/', function(req, res) {
   }
   var product = {
     "product_name": product_name,
-    "price": price,
     "description": description,
+    "price": price,
+    "discount": discount,
     "timestamp": timestamp
   }
 
@@ -88,8 +90,9 @@ router.get('/:id', function(req, res, next) {
 router.put('/:id', function(req, res) {
   var pid          = req.params.id;
   var product_name = req.body.product_name;
-  var price        = req.body.price;
   var description  = req.body.description;
+  var price        = req.body.price;
+  var discount     = req.body.discount;
   var timestamp    = new Date();
 
   if(!product_name) {
@@ -117,8 +120,9 @@ router.put('/:id', function(req, res) {
     }else{
       var product = {
         "product_name": product_name,
-        "price": price,
         "description": description,
+        "price": price,
+        "discount": discount,
         "timestamp": timestamp
       }
 

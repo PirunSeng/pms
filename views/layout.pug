@@ -3,13 +3,19 @@ html
   head
     title Product Management System
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', rel='stylesheet')
   body
-    nav
-      ul
-        li
-          a(href='/') Home
-        li
-          a(href='/products/add') Add Product
-    block content
+    .container
+      nav.navbar.navbar-default
+        .container-fluid
+          ul.nav.navbar-nav
+            li
+              a(href='/')
+                span.glyphicon.glyphicon-home
+                span  Home
+            li
+              a(href='/products/add') Add Product
+
+      block content
     script(src='https://code.jquery.com/jquery-3.3.1.min.js')
     script(src='/javascripts/main.js')

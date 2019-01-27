@@ -3,9 +3,15 @@ extends layout
 block content
   .show
     if product
-      h1 Name : #{product.product_name}
-      p Description : #{product.description}
-      p Price : #{product.price}
-      p Discount : #{product.discount}
-      p Timestamp : #{product.timestamp}
-      img(src=`/images/uploads/${product.avatar}` , alt='Avatar', width='300')
+      h1= product.product_name
+      .row
+        .col-xs-12.col-sm-6.col-md-4
+          p Description : #{product.description}
+          p Price : $#{product.price}
+          p Discount : #{product.discount}%
+          p Timestamp : #{product.timestamp}
+        .col-xs-12.col-sm-6.col-md-8
+          if product.avatar
+            img(src=`/images/uploads/${product.avatar}` , alt='Avatar', width='300')
+          else
+            img(src='/images/uploads/no_image.jpg' , alt='No Avatar', width='300')

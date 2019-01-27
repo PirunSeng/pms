@@ -6,3 +6,15 @@ body {
 a {
   color: #00B7FF;
 }
+
+form .btn-cancel {
+  margin-left: 5px;
+}
+
+form .form-btn {
+  min-width: 80px;
+}
+
+table .btn-action {
+  min-width: 50px;
+}

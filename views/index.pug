@@ -2,22 +2,25 @@ extends layout
 
 block content
   if products
-    table(border='1')
-      tr
-        th Product Name
-        th Description
-        th Price
-        th(colspan='3') Action
-      each product, i in products
-        tr
-          td= product.product_name
-          td= product.description
-          td= product.price
-          td
-            a(href=`/products/show/${product._id}`) Detail
-          td
-            a(href=`/products/edit/${product._id}`) Edit
-          td
-            a(class='deleteProduct', data-id=`${product._id}`, href='#') Delete
+    .table-responsive
+      table.table.table-bordered.table-hover.table-striped
+        thead
+          tr
+            th.text-center Product Name
+            th.text-center Description
+            th.text-center Price
+            th.text-center(colspan='3') Action
+        tbody
+          each product, i in products
+            tr
+              td= product.product_name
+              td= product.description
+              td $#{product.price}
+              td.text-center
+                a.btn.btn-xs.btn-default.btn-action(href=`/products/show/${product._id}`) Detail
+              td.text-center
+                a.btn.btn-xs.btn-primary.btn-action(href=`/products/edit/${product._id}`) Edit
+              td.text-center
+                a.btn.btn-xs.btn-danger.btn-action(class='deleteProduct', data-id=`${product._id}`, href='#') Delete
   else
     p There are no products to display

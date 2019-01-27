@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  .show
+    if product
+      h1 Name : #{product.product_name}
+      p Description : #{product.description}
+      p Price : #{product.price}
+      p Discount : #{product.discount}
+      p Timestamp : #{product.timestamp}
+      img(src=`/images/uploads/${product.avatar}` , alt='Avatar', width='300')

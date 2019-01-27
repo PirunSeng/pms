@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  h1=title
+  ul.errors
+    if errors
+      each error, i in errors
+        li.alert.alert-danger #{error.msg}
+
+  form(method='post', action='/products/add', enctype="multipart/form-data")
+    .form-group
+      label Product Name:
+      input.form-control(name='product_name', type='text')
+    .form-group
+      label Description:
+      input.form-control(name='description', type='text')
+    .form-group
+      label Price:
+      input.form-control(name='price', step='0.01', type='number')
+    .form-group
+      label Discount:
+      input.form-control(name='discount', type='number')
+    .form-group
+      label Avatar:
+      input.form-control(name='avatar', type='file')
+    input.btn.btn-default(name='submit', type='submit', value='Save')

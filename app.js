@@ -4,15 +4,23 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressValidator = require('express-validator');
+var session = require('express-session');
 var mongo = require('mongodb');
-var db = require('monk')('localhost/pms_development');
+var db = require('monk')('mongodb://localhost:27017/pms_development');
 var multer = require('multer');
-var upload = multer({ dest: './public/images/uploads' });
+var upload = multer({ dest: './public/images/uploads/' });
 
 var flash = require('connect-flash');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// var usersRouter = require('./routes/users');
+var productsRouter = require('./routes/products');
+
+// way one works
+// var apiRouter = require('./routes/api_test');
+// way two?
+var apiV1Router = require('./routes/api/v1/products');
+
 
 var app = express();
 
@@ -21,7 +29,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // Handle file upload & multipart data
-// app.use(multer({ dest: './public/images/uploads' }));
+app.use(upload.single('avatar'));
 
 
 app.use(logger('dev'));
@@ -29,16 +37,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// app.use(session ({
-//   secret: 'secret',
-//   saveUninitialized: true,
-//   resave: true
-// }));
+app.use(session ({
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: true
+}));
 
 // expresss validator
 app.use(expressValidator({
   errorFormatter: function(param, msg, value){
-    var namespace = params.split('.'),
+    var namespace = param.split('.'),
     root = namespace.shift(),
     formParam = root;
 
@@ -69,7 +77,12 @@ app.use(function(req, res, next){
 });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
+app.use('/products', productsRouter);
+// way one works
+// app.use('/api/v1/products', apiRouter);
+// way two?
+app.use('/api/v1/products', apiV1Router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -15,7 +15,7 @@ block content
             tr
               td= product.product_name
               td= product.description
-              td= product.price
+              td $#{product.price}
               td.text-center
                 a.btn.btn-xs.btn-default.btn-action(href=`/products/show/${product._id}`) Detail
               td.text-center
